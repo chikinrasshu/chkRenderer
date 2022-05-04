@@ -15,9 +15,9 @@ class Triangle: Primitive {
         let yBot: Float = -sqrt(3.0) / 6.0
         
         vertices = [
-            Vertex(pos: [-0.5, yBot, 0], color: [1, 0, 0, 1], uv: [0.0, 0.0]),
-            Vertex(pos: [   0, yTop, 0], color: [0, 1, 0, 1], uv: [0.5, 1.0]),
-            Vertex(pos: [ 0.5, yBot, 0], color: [0, 0, 1, 1], uv: [1.0, 0.0]),
+            Vertex(pos: [-0.5, yBot, 0], uv: [0.0, 0.0]),
+            Vertex(pos: [   0, yTop, 0], uv: [0.5, 1.0]),
+            Vertex(pos: [ 0.5, yBot, 0], uv: [1.0, 0.0]),
         ]
         
         indices = [

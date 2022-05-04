@@ -1,32 +1,33 @@
 //
-//  Cube.swift
+//  CubeBodyPiece.swift
 //  chkRenderer
 //
-//  Created by Jorge Botarro on 02-05-22.
+//  Created by Jorge Botarro on 04-05-22.
 //
 
 import Metal
 import MetalKit
 
-class Cube: Primitive {
+class CubeBodyPiece: Primitive {
     
     override func buildVertices() {
         let s: Float = 0.5
+        let s2: Float = 2.0 * s
         
         let tex00: simd_float2 = [0, 0]
         let tex01: simd_float2 = [0, 1]
         let tex10: simd_float2 = [1, 0]
         let tex11: simd_float2 = [1, 1]
         
-        let a: simd_float3 = [-s, -s, -s]
-        let b: simd_float3 = [+s, -s, -s]
-        let c: simd_float3 = [+s, -s, +s]
-        let d: simd_float3 = [-s, -s, +s]
+        let a: simd_float3 = [-s, +0, -s]
+        let b: simd_float3 = [+s, +0, -s]
+        let c: simd_float3 = [+s, +0, +s]
+        let d: simd_float3 = [-s, +0, +s]
         
-        let e: simd_float3 = [-s, +s, -s]
-        let f: simd_float3 = [+s, +s, -s]
-        let g: simd_float3 = [+s, +s, +s]
-        let h: simd_float3 = [-s, +s, +s]
+        let e: simd_float3 = [-s, s2, -s]
+        let f: simd_float3 = [+s, s2, -s]
+        let g: simd_float3 = [+s, s2, +s]
+        let h: simd_float3 = [-s, s2, +s]
         
         vertices = [
             // Front

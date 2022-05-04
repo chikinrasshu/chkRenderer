@@ -13,24 +13,20 @@ class Scene: Node {
     var uniforms: SceneUniforms
     var camera: Camera
     
-    override init(device: MTLDevice, name: String, parent: Node? = nil) {
+    override init(device: MTLDevice, name: String = "", parent: Node? = nil) {
         self.device = device
         uniforms = SceneUniforms()
         
-        camera = Camera(device: device, name: name + "'s Camera")
-        camera.position.z = -2.5
+        camera = Camera(device: device, name: "")
         
         super.init(device: device, name: name, parent: parent)
-    }
-    
-    override func update(dt: CFTimeInterval) {
-        camera.update(dt: dt)
-        super.update(dt: dt)
+        add(child: camera)
     }
     
     override func render(renderEncoder: MTLRenderCommandEncoder) {
         // Setup the scene
-        uniforms.projection = camera.projection * camera.localTransform
+        uniforms.view = camera.globalTransform.inverse
+        uniforms.projection = camera.projection
         renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<SceneUniforms>.size, index: 2)
         
         // Render the scene!

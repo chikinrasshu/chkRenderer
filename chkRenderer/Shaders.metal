@@ -24,10 +24,10 @@ vertex VertexOut basicVertexFunc(const device Vertex* vertices [[buffer(0)]],
     Vertex v = vertices[vID];
     VertexOut vOut;
     
-    float4x4 mvp = sU.projection * mU.modelView;
+    float4x4 mvp = sU.projection * sU.view * mU.model;
     
     vOut.pos = mvp * float4(v.pos, 1);
-    vOut.color = v.color * mU.color;
+    vOut.color = mU.color;
     vOut.uv = v.uv;
     
     return vOut;

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CAA45EE628222E3B00C300CD /* ChkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA45EE528222E3B00C300CD /* ChkView.swift */; };
+		CAA45EE828233B7800C300CD /* CubeBodyPiece.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA45EE728233B7800C300CD /* CubeBodyPiece.swift */; };
 		CADA80F3281F45820031B5B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADA80F2281F45820031B5B0 /* AppDelegate.swift */; };
 		CADA80F5281F45820031B5B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADA80F4281F45820031B5B0 /* ViewController.swift */; };
 		CADA80F7281F45830031B5B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CADA80F6281F45830031B5B0 /* Assets.xcassets */; };
@@ -24,9 +26,13 @@
 		CADA8120282023350031B5B0 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADA811F282023350031B5B0 /* Plane.swift */; };
 		CADA8122282030E50031B5B0 /* Cube.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADA8121282030E50031B5B0 /* Cube.swift */; };
 		CADA8125282199BC0031B5B0 /* TextureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADA8124282199BC0031B5B0 /* TextureManager.swift */; };
+		CADA81272821A75A0031B5B0 /* RimuruSurprised.png in Resources */ = {isa = PBXBuildFile; fileRef = CADA81262821A75A0031B5B0 /* RimuruSurprised.png */; };
+		CADA81292821BA680031B5B0 /* InputManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CADA81282821BA680031B5B0 /* InputManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CAA45EE528222E3B00C300CD /* ChkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChkView.swift; sourceTree = "<group>"; };
+		CAA45EE728233B7800C300CD /* CubeBodyPiece.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CubeBodyPiece.swift; sourceTree = "<group>"; };
 		CADA80EF281F45820031B5B0 /* chkRenderer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chkRenderer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CADA80F2281F45820031B5B0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CADA80F4281F45820031B5B0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -48,6 +54,8 @@
 		CADA811F282023350031B5B0 /* Plane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 		CADA8121282030E50031B5B0 /* Cube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cube.swift; sourceTree = "<group>"; };
 		CADA8124282199BC0031B5B0 /* TextureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureManager.swift; sourceTree = "<group>"; };
+		CADA81262821A75A0031B5B0 /* RimuruSurprised.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RimuruSurprised.png; sourceTree = "<group>"; };
+		CADA81282821BA680031B5B0 /* InputManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +92,9 @@
 				CADA810B281F5E620031B5B0 /* SceneGraph */,
 				CADA8112281F97E80031B5B0 /* Scenes */,
 				CADA80F2281F45820031B5B0 /* AppDelegate.swift */,
+				CADA81282821BA680031B5B0 /* InputManager.swift */,
 				CADA80F4281F45820031B5B0 /* ViewController.swift */,
+				CAA45EE528222E3B00C300CD /* ChkView.swift */,
 				CADA8103281F46D80031B5B0 /* Renderer.swift */,
 				CADA8117281FB43B0031B5B0 /* Math.swift */,
 				CADA8109281F4A810031B5B0 /* Shaders.metal */,
@@ -123,6 +133,7 @@
 				CADA811D281FC0960031B5B0 /* Triangle.swift */,
 				CADA811F282023350031B5B0 /* Plane.swift */,
 				CADA8121282030E50031B5B0 /* Cube.swift */,
+				CAA45EE728233B7800C300CD /* CubeBodyPiece.swift */,
 			);
 			path = Primitives;
 			sourceTree = "<group>";
@@ -139,6 +150,7 @@
 		CADA81232821999E0031B5B0 /* Textures */ = {
 			isa = PBXGroup;
 			children = (
+				CADA81262821A75A0031B5B0 /* RimuruSurprised.png */,
 				CADA8124282199BC0031B5B0 /* TextureManager.swift */,
 			);
 			path = Textures;
@@ -205,6 +217,7 @@
 			files = (
 				CADA80F7281F45830031B5B0 /* Assets.xcassets in Resources */,
 				CADA80FA281F45830031B5B0 /* Main.storyboard in Resources */,
+				CADA81272821A75A0031B5B0 /* RimuruSurprised.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,9 +236,12 @@
 				CADA8111281F62DD0031B5B0 /* Renderable.swift in Sources */,
 				CADA810D281F5E7F0031B5B0 /* Node.swift in Sources */,
 				CADA8125282199BC0031B5B0 /* TextureManager.swift in Sources */,
+				CADA81292821BA680031B5B0 /* InputManager.swift in Sources */,
+				CAA45EE828233B7800C300CD /* CubeBodyPiece.swift in Sources */,
 				CADA8114281F98180031B5B0 /* Scene.swift in Sources */,
 				CADA80F5281F45820031B5B0 /* ViewController.swift in Sources */,
 				CADA8104281F46D80031B5B0 /* Renderer.swift in Sources */,
+				CAA45EE628222E3B00C300CD /* ChkView.swift in Sources */,
 				CADA8116281FADA10031B5B0 /* Texturable.swift in Sources */,
 				CADA8118281FB43B0031B5B0 /* Math.swift in Sources */,
 				CADA8122282030E50031B5B0 /* Cube.swift in Sources */,

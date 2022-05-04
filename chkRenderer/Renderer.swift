@@ -13,6 +13,8 @@ class Renderer: NSObject, MTKViewDelegate {
     static var pixelFormat: MTLPixelFormat? = .bgra8Unorm
     static var depthFormat: MTLPixelFormat? = MTLPixelFormat.invalid
     static var aspectRatio: Float = 1.0
+    static var width: Float = 800
+    static var height: Float = 800
     
     // Texture samplers
     static var linearSampler: MTLSamplerState? = nil
@@ -28,20 +30,24 @@ class Renderer: NSObject, MTKViewDelegate {
     // Scene
     let fragmentBuffer: MTLBuffer
     let scene: Scene
+    let robot: Node
     
     // Timing
     var lastRenderTime: CFTimeInterval? = nil
     var elapsedTime: Double = 0.0
     
-    init?(mtkView: MTKView) {
-        device = mtkView.device!
+    init?(chkView: MTKView) {
+        device = chkView.device!
         commandQueue = device.makeCommandQueue()!
         
         // Setup some globals
+        TextureManager.initialize(device: device)
         Renderer.library = device.makeDefaultLibrary()
-        Renderer.pixelFormat = mtkView.colorPixelFormat
-        Renderer.depthFormat = mtkView.depthStencilPixelFormat
-        Renderer.aspectRatio = Float(mtkView.frame.width / mtkView.frame.height)
+        Renderer.pixelFormat = chkView.colorPixelFormat
+        Renderer.depthFormat = chkView.depthStencilPixelFormat
+        Renderer.width = Float(chkView.frame.width)
+        Renderer.height = Float(chkView.frame.height)
+        Renderer.aspectRatio = Float(chkView.frame.width / chkView.frame.height)
         
         // Enable depth testing
         let depthStencilDescriptor = MTLDepthStencilDescriptor()
@@ -62,15 +68,61 @@ class Renderer: NSObject, MTKViewDelegate {
         
         // Setup the scene
         scene = Scene(device: device, name: "SceneRoot")
-        let p = Plane(device: device, name: "TestPlane")
-        let c = Cube(device: device, name: "TestCube")
+        scene.camera.position.y = 1.5
+        // let p = Plane(device: device, name: "TestPlane")
+        // scene.add(child: p)
         
-        p.rotation.x = .pi / 2.0
-        p.scale.x = 10
-        p.scale.z = 10
+        robot = Node(device: device, name: "TestCube")
+        robot.position.z = -20
         
-        scene.add(child: p)
-        scene.add(child: c)
+        // Add the body parts to the robot
+        let body = CubeBodyPiece(device: device, name: "Body")
+        body.color = [1,0,0,1]
+        body.position.y = 3.5
+        robot.add(child: body)
+        
+        let lLeg = CubeBodyPiece(device: device, name: "LeftLeg")
+        lLeg.color = [0,0,1,1]
+        lLeg.position.x = -0.8
+        // lLeg.scale.y = 3.5
+        lLeg.rotation.x = .pi
+        
+        let rLeg = CubeBodyPiece(device: device, name: "RightLeg")
+        rLeg.color = [0,0,1,1]
+        rLeg.position.x = 0.8
+        // rLeg.scale.y = 3.5
+        rLeg.rotation.x = .pi
+        
+        let lArm = CubeBodyPiece(device: device, name: "LeftArm")
+        lArm.color = [0,0,1,1]
+        lArm.position.x = -1.2
+        lArm.position.y = 3.0
+        lArm.position.z = -0.1
+        // lArm.scale.y = 3.5
+        lArm.rotation.x = .pi
+        
+        let rArm = CubeBodyPiece(device: device, name: "RightArm")
+        rArm.color = [0,0,1,1]
+        rArm.position.x = 1.2
+        rArm.position.y = 3.0
+        rArm.position.z = -0.1
+        // rArm.scale.y = 3.5
+        rArm.rotation.x = .pi
+        
+        let head = CubeBodyPiece(device: device, name: "Head")
+        head.color = [0,1,0,1]
+        head.position.y = 3.0
+        
+        body.add(child: head)
+        body.add(child: lLeg)
+        body.add(child: rLeg)
+        body.add(child: lArm)
+        body.add(child: rArm)
+        
+        scene.add(child: robot)
+        
+        // scene.camera.rotation.x = .pi / 4
+        // scene.camera.position.y = -5
     }
     
     static func buildTextureSampler(device: MTLDevice, minFilter: MTLSamplerMinMagFilter, magFilter: MTLSamplerMinMagFilter) -> MTLSamplerState {
@@ -82,13 +134,56 @@ class Renderer: NSObject, MTKViewDelegate {
     }
     
     // Update the scene
-    func update(view: MTKView, dt: CFTimeInterval) {
+    func update(view: MTKView, dtInterval: CFTimeInterval) {
         let ptr = fragmentBuffer.contents().bindMemory(to: BasicUniforms.self, capacity: 1)
         ptr.pointee.brightness = Float(0.25 * cos(elapsedTime) + 0.75)
         
+        let dt = Float(dtInterval)
+        
+        if (InputManager.isPressed(key: .Q)) {
+            scene.camera.position.x -= dt
+            robot.position.x -= dt
+        }
+        if (InputManager.isPressed(key: .E)) {
+            scene.camera.position.x += dt
+            robot.position.x += dt
+        }
+        
+        if (InputManager.isPressed(key: .W)) {
+            robot.rotation.x += dt
+        }
+        if (InputManager.isPressed(key: .S)) {
+            robot.rotation.x -= dt
+        }
+        if (InputManager.isPressed(key: .A)) {
+            robot.rotation.y -= dt
+        }
+        if (InputManager.isPressed(key: .D)) {
+            robot.rotation.y += dt
+        }
+        
+        if (InputManager.isPressed(key: .UpArrow)) {
+            scene.camera.rotation.x -= dt
+        }
+        if (InputManager.isPressed(key: .DownArrow)) {
+            scene.camera.rotation.x += dt
+        }
+        if (InputManager.isPressed(key: .LeftArrow)) {
+            scene.camera.rotation.y += dt
+        }
+        if (InputManager.isPressed(key: .RightArrow)) {
+            scene.camera.rotation.y -= dt
+        }
+        if (InputManager.isPressed(key: .Comma)) {
+            scene.camera.position.y -= dt
+        }
+        if (InputManager.isPressed(key: .Period)) {
+            scene.camera.position.y += dt
+        }
+        
         scene.update(dt: dt)
         
-        elapsedTime += dt
+        elapsedTime += dtInterval
     }
     
     // Draw the current scene
@@ -96,7 +191,7 @@ class Renderer: NSObject, MTKViewDelegate {
         gpuLock.wait()
         // Calculate the dt
         let systemTime = CACurrentMediaTime()
-        let dt = (lastRenderTime == nil) ? 0.0 : (systemTime - lastRenderTime!)
+        let dtInterval = (lastRenderTime == nil) ? 0.0 : (systemTime - lastRenderTime!)
         lastRenderTime = systemTime
         
         // Prepare the frame
@@ -110,7 +205,9 @@ class Renderer: NSObject, MTKViewDelegate {
         renderEncoder.setFragmentSamplerState(Renderer.pixelSampler!, index: 0)
         renderEncoder.setFragmentBuffer(fragmentBuffer, offset: 0, index: 0)
         
-        update(view: view, dt: dt)
+        // renderEncoder.setTriangleFillMode(.lines)
+        
+        update(view: view, dtInterval: dtInterval)
         scene.render(renderEncoder: renderEncoder)
         
         renderEncoder.endEncoding()
@@ -121,6 +218,9 @@ class Renderer: NSObject, MTKViewDelegate {
     
     // View updated, most likely changed size
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+        Renderer.width = Float(view.frame.width)
+        Renderer.height = Float(view.frame.height)
         Renderer.aspectRatio = Float(view.frame.width / view.frame.height)
+        scene.camera.updateMatrix()
     }
 }

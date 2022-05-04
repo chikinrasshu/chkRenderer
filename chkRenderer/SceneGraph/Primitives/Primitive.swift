@@ -28,7 +28,7 @@ class Primitive: Node {
         super.init(device: device, name: name, parent: parent)
         uniforms.color = [1, 1, 1, 1]
         
-        if let tmpTexture = setTexture(device: device, imageName: texName) {
+        if let tmpTexture = setTexture(imageName: texName) {
             texture = tmpTexture
             fragmentFunctionName = "basicTexturedFragmentFunc"
         }
@@ -67,11 +67,17 @@ extension Primitive: Renderable, Texturable {
         
         // Now draw ourselves
         if vertices.count > 0 {
-            uniforms.modelView = globalTransform
+            uniforms.model = globalTransform
+            uniforms.color = color
             
             renderEncoder.setRenderPipelineState(renderPipelineState)
             renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
             renderEncoder.setVertexBytes(&uniforms, length: MemoryLayout<ModelUniforms>.size, index: 1)
+            
+            if texture != nil {
+                renderEncoder.setFragmentSamplerState(Renderer.pixelSampler, index: 0)
+                renderEncoder.setFragmentTexture(texture, index: 0)
+            }
             
             renderEncoder.drawIndexedPrimitives(type: .triangle,
                                                 indexCount: indices.count, indexType: .uint16,
